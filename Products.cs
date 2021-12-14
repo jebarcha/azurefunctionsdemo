@@ -48,7 +48,7 @@ namespace ProductOrderManagement
         }
 
         [FunctionName("ProductBlobCreated")]
-        public static void ProductBlobCreated([BlobTrigger("products/{name}", Connection = "AzureWebJobsStorage")] Stream myBlob, string name, ILogger log)
+        public static void ProductBlobCreated([BlobTrigger("products/{name}", Connection = "StorageAccountConnectionString")] Stream myBlob, string name, ILogger log)
         {
             string[] blobName = name.Split('/');
             log.LogInformation("C# HTTP trigger function processed a request.");
