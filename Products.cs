@@ -33,5 +33,29 @@ namespace ProductOrderManagement
 
             return new CreatedResult(String.Empty, productId);
         }
+
+        [FunctionName("UploadProductImage")]
+        public async Task<IActionResult> UploadProductImage(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "products/{productId}/upload")] HttpRequest req,
+            ILogger log, Guid productId)
+        {
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+            IFormFileCollection formFiles = req.Form.Files;
+            await _productService.UploadProductImages(formFiles, productId);
+
+            return new OkResult();
+        }
+
+        [FunctionName("ProductBlobCreated")]
+        public static void ProductBlobCreated([BlobTrigger("products/{name}", Connection = "AzureWebJobsStorage")] Stream myBlob, string name, ILogger log)
+        {
+            string[] blobName = name.Split('/');
+            log.LogInformation("C# HTTP trigger function processed a request.");
+
+
+        }
+
+
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProductOrderManagement.Data;
 using ProductOrderManagement.Mapper;
 using ProductOrderManagement.Services;
+using ProductOrderManagement.Services.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,9 @@ namespace ProductOrderManagement
                 options.UseSqlServer(Environment.GetEnvironmentVariable("AzureDatabaseConnectionString")));
 
             builder.Services.AddScoped<IProductService, ProductService>();
+
+            builder.Services.AddSingleton<ICloudStorageService>(serviceProvider =>
+                new CloudStorageService(Environment.GetEnvironmentVariable("StorageAccountConnectionString")));
         }
 
     }

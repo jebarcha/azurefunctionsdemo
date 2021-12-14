@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using ProductOrderManagement.Data;
 using ProductOrderManagement.Dtos;
 using ProductOrderManagement.Models;
+using ProductOrderManagement.Services.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +16,15 @@ namespace ProductOrderManagement.Services
     {
         private readonly OrderMgtDbContext _orderManagementDbContext;
         private readonly IMapper _mapper;
+        private readonly ICloudStorageService _cloudStorageService;
+        private static string productContaierName = "products";
         public ProductService(OrderMgtDbContext orderManagementDbContext,
-                IMapper mapper)
+                IMapper mapper,
+                ICloudStorageService cloudStorageService)
         {
             _orderManagementDbContext = orderManagementDbContext;
             _mapper = mapper;
+            _cloudStorageService = cloudStorageService;
         }
 
         public async Task<Guid> CreateProduct(ProductDto productDto)
@@ -30,6 +36,11 @@ namespace ProductOrderManagement.Services
             await _orderManagementDbContext.Product.AddAsync(product);
             await _orderManagementDbContext.SaveChangesAsync();
             return product.ProductId;
+        }
+
+        public async Task UploadProductImages(IFormFileCollection files, Guid productId)
+        {
+            await _cloudStorageService.UploadFileToBlob(files, productId, productContaierName);   
         }
     }
 }
