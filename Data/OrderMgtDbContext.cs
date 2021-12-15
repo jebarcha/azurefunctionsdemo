@@ -14,5 +14,7 @@ namespace ProductOrderManagement.Data
         {
         }
         public DbSet<Product> Product { get; set; }
+        public DbSet<ProductOrderManagement.Models.Order> Orders { get; set; }
+        public DbSet<ProductOrderManagement.Models.OrderItem> OrderItems { get; set; }
     }
 }

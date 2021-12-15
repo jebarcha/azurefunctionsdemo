@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ProductOrderManagement
 {
-    public class Function1
+    public class Blob
     {
         [FunctionName("Function1")]
         public void Run([BlobTrigger("product/{name}", Connection = "AzureWebJobsStorage")]Stream myBlob, string name, ILogger log)

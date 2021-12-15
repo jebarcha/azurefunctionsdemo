@@ -14,6 +14,8 @@ namespace ProductOrderManagement.Mapper
         public MappingProfile()
         {
             CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap();
         }
     }
 }

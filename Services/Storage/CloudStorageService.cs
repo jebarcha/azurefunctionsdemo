@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Queue;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,16 @@ namespace ProductOrderManagement.Services.Storage
         {
             _cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
         }
+
+        public async Task SendMessageToQueue(string queueName, string message)
+        {
+            CloudQueueClient cloudQueueClient = _cloudStorageAccount.CreateCloudQueueClient();
+            CloudQueue cloudQueue = cloudQueueClient.GetQueueReference(queueName);
+            await cloudQueue.CreateIfNotExistsAsync();
+            CloudQueueMessage cloudQueueMessage = new CloudQueueMessage(message);
+            await cloudQueue.AddMessageAsync(cloudQueueMessage);
+        }
+
         public async Task UploadFileToBlob(IFormFileCollection formFiles, Guid folderId, string containerName)
         {
             foreach (IFormFile file in formFiles)

@@ -10,5 +10,8 @@ namespace ProductOrderManagement.Services.Storage
     public interface ICloudStorageService
     {
         Task UploadFileToBlob(IFormFileCollection formFiles, Guid folderId, string containerName);
+
+        Task SendMessageToQueue(string queueName, string message);
+
     }
 }
